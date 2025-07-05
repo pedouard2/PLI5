@@ -3,6 +3,7 @@
 import { ref } from 'vue'
 import PLI5Button from '../components/PLI5Button.vue'
 import PDFViewer from '../components/PDFViewer.vue'
+import HomeService from '../services/HomeService'
 const userUploadedPDF = ref<File | null>(null)
 const privacySimplifiedPDF = ref<File | null>(null)
 function handleFile(event: Event) {
@@ -10,9 +11,21 @@ function handleFile(event: Event) {
   const file = target.files?.[0]
   userUploadedPDF.value = file ?? null
 }
-async function handleArrow(file: File | undefined) {
-  console.log('HIIII##')
-  userUploadedPDF.value = file ?? null
+async function handleArrow() {
+  if (!userUploadedPDF.value) {
+    console.error('No file selected to simplify.')
+    return
+  }
+
+  try {
+    const response = await HomeService.simplifyPDF(userUploadedPDF.value)
+    const file = new File([response.data], 'simplified_policy.pdf', {
+      type: 'application/pdf',
+    })
+    privacySimplifiedPDF.value = file
+  } catch (error) {
+    console.error('Failed to simplify PDF:', error)
+  }
 }
 </script>
 
