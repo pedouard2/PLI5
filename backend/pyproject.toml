@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "privacy-like-im-5"
+version = "0.1.0"
+description = "Backend service for app"
+authors = ["Prince Edouard <pedouard2@gmail.com>"]
+readme = "README.md"
+
+packages = [{ include = "pli5", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = {extras = ["standard"], version = "^0.115.14"}
+pymupdf = "^1.26.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
